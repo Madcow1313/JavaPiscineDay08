@@ -1,6 +1,5 @@
 package school21.spring.service.repositories;
 
-import com.zaxxer.hikari.HikariDataSource;
 import school21.spring.service.models.User;
 
 import javax.sql.DataSource;
@@ -26,7 +25,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
         try{
             connection = dataSource.getConnection();
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM shop.product WHERE identifier = " + id);
+            resultSet = statement.executeQuery("SELECT * FROM models.user WHERE identifier = " + id);
             if (resultSet.next()){
                 user = new User(resultSet.getLong(1),
                         resultSet.getString(2));
@@ -67,12 +66,18 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     public void save(User entity) {
         Connection connection;
         Statement statement;
+        ResultSet resultSet;
 
         try{
             connection = dataSource.getConnection();
             statement = connection.createStatement();
-            statement.executeQuery("INSERT INTO models.user (identifier, email) VALUES ('"
-                    + entity.getIdentifier() + "', '" + entity.getEmail() + "')");
+            statement.executeUpdate("INSERT INTO models.user (email) VALUES ('"
+                    + entity.getEmail() + "')");
+            resultSet = statement.executeQuery("SELECT * FROM models.user WHERE email = '" +  entity.getEmail() + "'");
+            if (resultSet.next()){
+                entity.setIdentifier(resultSet.getLong(1));
+                entity.setEmail(resultSet.getString(2));
+            }
         }
         catch (SQLException e){
             System.out.println("Something went wrong");
@@ -87,7 +92,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
         try{
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("UPDATE shop.product SET name = ?, price = ? WHERE identifier = ?");
+            statement = connection.prepareStatement("UPDATE models.user SET email = ? WHERE identifier = ?");
             statement.setString(1, entity.getEmail());
             statement.setLong(2, entity.getIdentifier());
             statement.execute();

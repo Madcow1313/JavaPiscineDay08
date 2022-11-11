@@ -28,6 +28,21 @@
             <artifactId>spring-jdbc</artifactId>
             <version>5.3.23</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.5.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -39,7 +54,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>app.App</mainClass>
+                            <mainClass>school21.spring.service.application.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
